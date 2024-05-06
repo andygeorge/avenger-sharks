@@ -24,5 +24,3 @@ func SteamSetup():
     if !STEAM_SUBSCRIBED:
         Logging.log_entry("Game not owned.")
         get_tree().quit()
-
-    

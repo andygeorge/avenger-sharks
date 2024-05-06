@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
-const SharkSprayScene = preload("res://Scenes/SharkSpray.tscn")
-const GrenadeScene = preload("res://Scenes/Grenade.tscn")
-const MiniSharkScene = preload("res://Scenes/MiniShark.tscn")
+const SharkSprayScene = preload ("res://Scenes/SharkSpray.tscn")
+const GrenadeScene = preload ("res://Scenes/Grenade.tscn")
+const MiniSharkScene = preload ("res://Scenes/MiniShark.tscn")
 
 enum {
     ALIVE,
@@ -46,9 +46,9 @@ var powerup_labels_being_displayed = 0
 var fire_delay = constants.PLAYER_FIRE_DELAY
 var grenade_delay = constants.PLAYER_GRENADE_DELAY
 var astar_pathing_grid
-var swim_surge_available:bool = true
-var swim_surge_activate:bool = false
-var tween_surge:Tween
+var swim_surge_available: bool = true
+var swim_surge_activate: bool = false
+var tween_surge: Tween
 
 func _ready():
     shark_status = ALIVE;
@@ -60,27 +60,27 @@ func _ready():
         
     # Initiate maximum levels for each power-up
     max_powerup_levels = {
-        'SPEED UP':     constants.POWERUP_SPEEDUP_MAX_LEVEL,
-        'FAST SPRAY':   constants.POWERUP_FASTSPRAY_MAX_LEVEL,
-        'BIG SPRAY':    constants.POWERUP_BIGSPRAY_MAX_LEVEL,
-        'GRENADE':      constants.POWERUP_GRENADE_MAX_LEVEL,
-        'MINI SHARK':   constants.POWERUP_MINISHARK_MAX_LEVEL
+        'SPEED UP': constants.POWERUP_SPEEDUP_MAX_LEVEL,
+        'FAST SPRAY': constants.POWERUP_FASTSPRAY_MAX_LEVEL,
+        'BIG SPRAY': constants.POWERUP_BIGSPRAY_MAX_LEVEL,
+        'GRENADE': constants.POWERUP_GRENADE_MAX_LEVEL,
+        'MINI SHARK': constants.POWERUP_MINISHARK_MAX_LEVEL
     }
     
     upgrades = {
         # Code          [ Current Level, Max Level, Image path, Description
         # If Max Level is 0 then it is a health-style purchase (Purchase once, instand result, doesn't stick)
         # If Max Level is 1 then it can only ever be purchased once (Binary item)
-        'MAGNET':           [ 0, 1, 'res://Images/crosshair184.png', 'A powerful magnet which does magnet things.'],
-        'ARMOUR':           [ 0, 3, 'res://Images/crosshair184.png', 'Decrease incoming damage by 10%'],
-        'POTION POWER':     [ 0, 3, 'res://Images/crosshair184.png', 'Health potions are 10% more efficient'],
-        'FISH AFFINITY':    [ 0, 3, 'res://Images/crosshair184.png', 'Decrease fish needed for FRENZY by 10%'],
-        'DOMINANT DINO':    [ 0, 3, 'res://Images/crosshair184.png', 'Increase Mr Dinosaur attack time by 20%'],
-        'MORE POWER':       [ 0, 3, 'res://Images/crosshair184.png', 'Increase Power Up duration by 20%'],
-        'LOOT LOVER':       [ 0, 3, 'res://Images/crosshair184.png', 'Increase item drop rate by 10%'],
-        'CHEAT DEATH':      [ 0, 1, 'res://Images/crosshair184.png', 'Regain 50% health upon death - Once!'],
-        'SWIM SURGE':       [ 0, 3, 'res://Images/crosshair184.png', 'Improve swim surge re-use time by 10%'],
-        'HEAL ME':          [ -1, 0, 'res://Images/crosshair184.png', 'Instantly regain all health']
+        'MAGNET':           [0, 1, 'res://Images/crosshair184.png', 'A powerful magnet which does magnet things.'],
+        'ARMOUR':           [0, 3, 'res://Images/crosshair184.png', 'Decrease incoming damage by 10%'],
+        'POTION POWER':     [0, 3, 'res://Images/crosshair184.png', 'Health potions are 10% more efficient'],
+        'FISH AFFINITY':    [0, 3, 'res://Images/crosshair184.png', 'Decrease fish needed for FRENZY by 10%'],
+        'DOMINANT DINO':    [0, 3, 'res://Images/crosshair184.png', 'Increase Mr Dinosaur attack time by 20%'],
+        'MORE POWER':       [0, 3, 'res://Images/crosshair184.png', 'Increase Power Up duration by 20%'],
+        'LOOT LOVER':       [0, 3, 'res://Images/crosshair184.png', 'Increase item drop rate by 10%'],
+        'CHEAT DEATH':      [0, 1, 'res://Images/crosshair184.png', 'Regain 50% health upon death - Once!'],
+        'SWIM SURGE':       [0, 3, 'res://Images/crosshair184.png', 'Improve swim surge re-use time by 10%'],
+        'HEAL ME':          [ - 1, 0, 'res://Images/crosshair184.png', 'Instantly regain all health']
     }
     
 func prepare_for_new_game():
@@ -130,7 +130,7 @@ func get_input():
     if !swim_surge_activate:
         velocity = input_direction * speed
         
-    if $FireRateTimer.time_left == 0 && get_parent().game_mode == 'ARCADE':    
+    if $FireRateTimer.time_left == 0&&get_parent().game_mode == 'ARCADE':
         # Mouse aiming
         if Input.is_action_pressed('shark_fire_mouse'):
             var shark_spray = SharkSprayScene.instantiate()
@@ -139,7 +139,7 @@ func get_input():
             var target_direction = (get_global_mouse_position() - global_position).normalized()
             shark_spray.global_position = position;
             shark_spray.velocity = velocity + (target_direction * constants.PLAYER_FIRE_SPEED)
-            Storage.increase_stat('player','shots_fired',1)
+            Storage.increase_stat('player', 'shots_fired', 1)
             
             mini_shark_fire(target_direction)
             grenade_fire(target_direction)
@@ -160,8 +160,8 @@ func get_input():
             shoot_input.y = Input.get_action_strength("shoot_down") - Input.get_action_strength("shoot_up");
             shoot_direction = shoot_direction.normalized();
             
-            shark_spray.velocity = velocity+(shoot_direction * constants.PLAYER_FIRE_SPEED)
-            Storage.increase_stat('player','shots_fired',1)
+            shark_spray.velocity = velocity + (shoot_direction * constants.PLAYER_FIRE_SPEED)
+            Storage.increase_stat('player', 'shots_fired', 1)
              
             mini_shark_fire(shoot_direction)
             grenade_fire(shoot_direction)
@@ -179,12 +179,12 @@ func get_input():
             shoot_input.y = Input.get_action_strength("shoot_down") - Input.get_action_strength("shoot_up");
             shoot_direction = shoot_direction.normalized();
                 
-            $RayCast2D.target_position = shoot_direction*10000
+            $RayCast2D.target_position = shoot_direction * 10000
             if $RayCast2D.is_colliding():
                 # Need to do this check as rogue traps were causing invalid index position errors.
                 if $RayCast2D.get_collider():
                     
-                    var line_end_position = $RayCast2D.get_collider().position 
+                    var line_end_position = $RayCast2D.get_collider().position
                     
                     # Tilemaps default to (0,0) hit location unless we do something special...
                     if $RayCast2D.get_collider().name == 'Arena':
@@ -193,27 +193,27 @@ func get_input():
                     # Remove existing target.
                     remove_aiming_line()
                     
-                    $AimingLine.add_point(to_local(line_end_position) )
+                    $AimingLine.add_point(to_local(line_end_position))
             
         else:
             # Remove targetting line when stick not being used.
             remove_aiming_line()
             
-    if Input.is_action_pressed('fish_frenzy') && fish_frenzy_enabled == true:
+    if Input.is_action_pressed('fish_frenzy')&&fish_frenzy_enabled == true:
         # If we are SWIM SURGING, stop that immediately so we don't fall off the map.
         if swim_surge_activate:
             _on_swim_surge_running_timer_timeout()
         
         fish_frenzy_enabled = false
-        shark_status=FISH_FRENZY
+        shark_status = FISH_FRENZY
         fish_frenzy_colour = 'BLUE'
-        velocity = Vector2(0,0)
+        velocity = Vector2(0, 0)
         $CollisionShape2D.disabled = true
         $FishProgressBar.visible = true
         $FishFrenzyTimer.start(constants.PLAYER_FISH_FRENZY_DURATION)
         $FishFrenzyFireTimer.start(constants.PLAYER_FISH_FRENZY_FIRE_DELAY)
         
-        if Storage.Config.get_value('config','enable_haptics',false):
+        if Storage.Config.get_value('config', 'enable_haptics', false):
             Input.start_joy_vibration(0, 0.25, 0.25, constants.PLAYER_FISH_FRENZY_DURATION)
         
     if shark_status == ALIVE and Input.is_action_just_pressed('secondary_ability'):
@@ -223,8 +223,8 @@ func get_input():
             swim_surge_activate = true
             swim_surge_available = false
             
-            tween_surge = get_tree().create_tween()   
-            tween_surge.tween_property(self, "velocity", input_direction*3000, 0.25)
+            tween_surge = get_tree().create_tween()
+            tween_surge.tween_property(self, "velocity", input_direction * 3000, 0.25)
             
             $SwimSurgeRunningTimer.start()
             $AudioStreamPlayerSplash.play()
@@ -249,7 +249,7 @@ func _physics_process(_delta):
 
         $ProgressBarBlinkTimer.start()
     
-    if $PowerUpTickTimer.time_left == 0 && shark_status == ALIVE:
+    if $PowerUpTickTimer.time_left == 0&&shark_status == ALIVE:
         power_up_tick()
         $PowerUpTickTimer.start()
     
@@ -268,7 +268,7 @@ func _physics_process(_delta):
             
                 # Alternate normal / red shark colour as timer is running out.
                 if power_pellet_warning_running and $PowerPelletWarningTimer.time_left == 0:
-                    if $AnimatedSprite2D.get_modulate() == Color(1,1,1,1):
+                    if $AnimatedSprite2D.get_modulate() == Color(1, 1, 1, 1):
                         $AnimatedSprite2D.set_modulate(Color(1, 0, 0, 1))
                     else:
                         $AnimatedSprite2D.set_modulate(Color(1, 1, 1, 1))
@@ -323,13 +323,13 @@ func _physics_process(_delta):
                             powerup_label_animation('HEALTH!')
                             _on_main_player_update_energy()
                             
-                            if (original_energy <= constants.PLAYER_LOW_ENERGY_BLINK) && (player_energy > constants.PLAYER_LOW_ENERGY_BLINK):
+                            if (original_energy <= constants.PLAYER_LOW_ENERGY_BLINK)&&(player_energy > constants.PLAYER_LOW_ENERGY_BLINK):
                                 emit_signal('player_no_longer_low_energy')
                             
                             collided_with.get_node('.').despawn()
                             
                         "chest":
-                            var powerup_options = ['SPEED UP','FAST SPRAY','BIG SPRAY','GRENADE','MINI SHARK']
+                            var powerup_options = ['SPEED UP', 'FAST SPRAY', 'BIG SPRAY', 'GRENADE', 'MINI SHARK']
                             var powerup_selected = powerup_options[randi() % powerup_options.size()]
                             
                             # Uncomment to test.
@@ -348,8 +348,8 @@ func _physics_process(_delta):
                                 'BIG SPRAY':
                                     spray_size = 0.5 + (constants.PLAYER_FIRE_SIZE_POWERUP_INCREASE * current_powerup_levels[powerup_selected])
                                 'GRENADE':
-                                    grenade_delay = constants.PLAYER_GRENADE_DELAY - (constants.PLAYER_GRENADE_DELAY_POWERUP_DECREASE * current_powerup_levels[powerup_selected])  
-                                'MINI SHARK':       
+                                    grenade_delay = constants.PLAYER_GRENADE_DELAY - (constants.PLAYER_GRENADE_DELAY_POWERUP_DECREASE * current_powerup_levels[powerup_selected])
+                                'MINI SHARK':
                                     if get_tree().get_nodes_in_group('miniSharkGroup').size() < max_powerup_levels[powerup_selected]:
                                             
                                         var new_mini_shark = MiniSharkScene.instantiate()
@@ -393,7 +393,7 @@ func _physics_process(_delta):
             if $FishFrenzyTimer.time_left == 0:
                 stop_fish_frenzy()
                 
-                shark_status = ALIVE               
+                shark_status = ALIVE
             else:
                 shake(10.0)
                 $AnimatedSprite2D.rotation_degrees += 20
@@ -405,11 +405,11 @@ func _physics_process(_delta):
                 
                 if $FishFrenzyFireTimer.time_left == 0:
                     $FishFrenzyFireTimer.start(constants.PLAYER_FISH_FRENZY_FIRE_DELAY)
-                    var i=0
+                    var i = 0
                     
-                    while i <= 32:  
-                        var target_direction = Vector2(1,1).normalized()
-                        target_direction = target_direction.rotated ( deg_to_rad(360.0/32.0) * i)
+                    while i <= 32:
+                        var target_direction = Vector2(1, 1).normalized()
+                        target_direction = target_direction.rotated(deg_to_rad(360.0 / 32.0) * i)
                         var shark_spray = SharkSprayScene.instantiate()
                         get_parent().add_child(shark_spray)
                         shark_spray.add_to_group('sharkSprayGroup')
@@ -419,11 +419,11 @@ func _physics_process(_delta):
                         if fish_frenzy_colour == 'BLUE':
                             fish_frenzy_colour = 'GREEN'
                         else:
-                            shark_spray.modulate = Color(0,1,0) 
+                            shark_spray.modulate = Color(0, 1, 0)
                             fish_frenzy_colour = 'BLUE'
                             
                         $AudioStreamPlayerSpray.play()
-                        i+=1
+                        i += 1
                                  
         EXPLODING:
             if $PlayerExplosionTimer.time_left == 0:
@@ -444,7 +444,7 @@ func _physics_process(_delta):
                     
                     shark_status = CHEATING_DEATH
                     $PlayerExplosionTimer.start()
-                else:       
+                else:
                     emit_signal('player_died');
                     shark_status = EXPLODED;
         CHEATING_DEATH:
@@ -454,15 +454,15 @@ func _physics_process(_delta):
                 $CollisionShape2D.set_deferred("disabled", false)
                 $AnimatedSprite2D.animation = 'default'
                 $AnimatedSprite2D.speed_scale = 1
-                $EnergyProgressBar.visible=true
+                $EnergyProgressBar.visible = true
                 
                 if get_parent().game_mode == 'ARCADE':
-                    $FishProgressBar.visible=true    
+                    $FishProgressBar.visible = true
                 
                 powerup_label_animation('DEATH CHEATED!')
                 
                 # Give a 1s grace period before taking damage again.
-                $PlayerHitGracePeriodTimer.start(1)      
+                $PlayerHitGracePeriodTimer.start(1)
         HUNTING_KEY:
             if velocity.x > 0:
                 $AnimatedSprite2D.set_flip_h(true);
@@ -487,12 +487,12 @@ func _physics_process(_delta):
             for i in get_slide_collision_count():
                 var collision = get_slide_collision(i)
                 
-                if collision.get_collider().name == 'Key':  
+                if collision.get_collider().name == 'Key':
                     shark_status = HUNTING_EXIT;
                     get_parent().get_node('Arena').get_node('ExitDoor').get_node('CollisionShape2D').disabled = false;
                     emit_signal('player_got_key')
                     
-                    var exit_door_global = get_parent().get_node('Arena').get_node('ExitDoor').global_position            
+                    var exit_door_global = get_parent().get_node('Arena').get_node('ExitDoor').global_position
                     astar_pathing_grid = get_parent().get_node('Arena').get_astar_route_from_positions(global_position, exit_door_global)
                   
                     # Start heading towards the first one. 
@@ -527,25 +527,25 @@ func _physics_process(_delta):
                 var collision = get_slide_collision(i)
                 
                 if collision.get_collider().name == 'Arena':
-                    did_collide=true
+                    did_collide = true
                     velocity = velocity.slide(collision.get_normal())
                 
-                if collision.get_collider().name == 'ExitDoor':  
-                    did_collide=true
+                if collision.get_collider().name == 'ExitDoor':
+                    did_collide = true
                     shark_status = FOUND_EXIT;
-                    velocity = Vector2i(0,0)
+                    velocity = Vector2i(0, 0)
 
                     # Open door.
                     get_parent().get_node('Arena').open_top_door()
                     get_parent().get_node('Arena').get_node('ExitDoor').get_node('CollisionShape2D').disabled = true;
                     
                     emit_signal('player_found_exit_stop_key_movement')
-                    shark_status=GOING_THROUGH_DOOR
+                    shark_status = GOING_THROUGH_DOOR
                     
                     #var tween_camera = get_tree().create_tween()   
                     #tween_camera.tween_property($Camera2D, "zoom", Vector2(3.0,3.0), 0.2)
                 
-                    $DoorOpenTimer.start()   
+                    $DoorOpenTimer.start()
                     
             if !did_collide:
                 var target_direction = (get_parent().get_node('Arena').get_node('ExitDoor').global_position - global_position).normalized();
@@ -554,16 +554,16 @@ func _physics_process(_delta):
         GOING_THROUGH_DOOR:
                 if $DoorOpenTimer.time_left == 0:
                     var target_direction = (get_parent().get_node('Arena').get_node('ExitLocation').global_position - global_position).normalized();
-                    velocity = target_direction * constants.PLAYER_SPEED_ESCAPING;            
+                    velocity = target_direction * constants.PLAYER_SPEED_ESCAPING;
                      
                     var tween = get_tree().create_tween()
-                    tween.tween_property(get_parent(), "modulate", Color(0,0,0,0), 0.35)
+                    tween.tween_property(get_parent(), "modulate", Color(0, 0, 0, 0), 0.35)
                                     
                 for i in get_slide_collision_count():
                     var collision = get_slide_collision(i)
                 
-                    if collision.get_collider().name == 'ExitLocation':  
-                        emit_signal('player_found_exit');  
+                    if collision.get_collider().name == 'ExitLocation':
+                        emit_signal('player_found_exit');
         MOVING_TO_START_POSITION:
                 if $DoorCloseTimer.time_left == 0:
                         # Close bottom door.
@@ -572,7 +572,7 @@ func _physics_process(_delta):
                 for i in get_slide_collision_count():
                     var collision = get_slide_collision(i)
                      
-                    if collision.get_collider().name == 'PlayerStartLocation':  
+                    if collision.get_collider().name == 'PlayerStartLocation':
                         shark_status = ALIVE
                         get_parent().get_node('Arena').get_node('PlayerStartLocation').get_node('CollisionShape2D').disabled = true;
                                 
@@ -589,23 +589,23 @@ func _player_hit():
 
         get_parent().get_node('HUD').flash_screen_red()
         
-        if Storage.Config.get_value('config','enable_haptics',false):
+        if Storage.Config.get_value('config', 'enable_haptics', false):
             Input.start_joy_vibration(0, 0.5, 0.5, 0.05)
         
         var damage_reduction_percentage = upgrades['ARMOUR'][0] * constants.ARMOUR_DAMAGE_REDUCTION_PERCENTAGE
-        var damage_to_perform = constants.PLAYER_HIT_BY_ENEMY_DAMAGE - (( damage_reduction_percentage / 100.0) * constants.PLAYER_HIT_BY_ENEMY_DAMAGE)
+        var damage_to_perform = constants.PLAYER_HIT_BY_ENEMY_DAMAGE - ((damage_reduction_percentage / 100.0) * constants.PLAYER_HIT_BY_ENEMY_DAMAGE)
  
         player_energy = player_energy - damage_to_perform
         
         if player_energy <= 0:
             player_energy = 0;
             $CollisionShape2D.set_deferred("disabled", true)
-            velocity = Vector2(0,0);
+            velocity = Vector2(0, 0);
             $AnimatedSprite2D.animation = 'explosion';
             $AudioStreamPlayerExplosion.play();
-            $EnergyProgressBar.visible=false
-            $FishProgressBar.visible=false
-            shark_status=EXPLODING;
+            $EnergyProgressBar.visible = false
+            $FishProgressBar.visible = false
+            shark_status = EXPLODING;
             $PlayerExplosionTimer.start();
             despawn_mini_sharks()
             remove_aiming_line()
@@ -658,34 +658,34 @@ func powerup_label_animation(powerup_name):
 
     # Initial position bump if there are multiple animations happening.
     if powerup_labels_being_displayed > 1:
-        new_label.position.y += -50 * (powerup_labels_being_displayed-1)
+        new_label.position.y += - 50 * (powerup_labels_being_displayed - 1)
     
-    new_label.set_modulate(Color(1,1,1,1));
+    new_label.set_modulate(Color(1, 1, 1, 1));
     new_label.text = powerup_name
     new_label.visible = true
     
     # Text should move upwards slightly.
     var target_position = new_label.position
-    target_position.y += -50
+    target_position.y += - 50
     
     var tween = get_tree().create_tween()
     tween.set_parallel()
-    tween.tween_property(new_label, "modulate", Color(0,0,0,0), 2)
+    tween.tween_property(new_label, "modulate", Color(0, 0, 0, 0), 2)
     tween.tween_property(new_label, "position", target_position, 2)
     tween.tween_callback(self.powerup_label_animation_decrease_count).set_delay(1.5)
     tween.tween_callback(new_label.queue_free).set_delay(2)
  
 func powerup_label_animation_decrease_count():
-    powerup_labels_being_displayed += -1
+    powerup_labels_being_displayed += - 1
     
     if powerup_labels_being_displayed < 0:
         powerup_labels_being_displayed = 0
    
 func set_fire_rate_delay_timer():
-    $FireRateTimer.start(fire_delay)    
+    $FireRateTimer.start(fire_delay)
         
 func set_grenade_rate_delay_timer():
-    $GrenadeRateTimer.start(grenade_delay)         
+    $GrenadeRateTimer.start(grenade_delay)
         
 func mini_shark_fire(shark_fire_direction):
     for mini_shark in get_tree().get_nodes_in_group("miniSharkGroup"):
@@ -723,13 +723,13 @@ func grenade_fire(_fire_direction):
                 if enemy.is_enemy_alive():
                     var distance = position.distance_to(enemy.position)
                     if distance < enemy_distance:
-                        enemy_distance=distance
-                        closest_enemy=enemy
+                        enemy_distance = distance
+                        closest_enemy = enemy
             
         if enemy_distance != 10000:
             grenade.velocity = position.direction_to(closest_enemy.position) * constants.GRENADE_SPEED
         else:
-            grenade.velocity = Vector2(0,0)
+            grenade.velocity = Vector2(0, 0)
     
         $GrenadeRateTimer.start(grenade_delay)
     
@@ -738,17 +738,17 @@ func _on_main_player_enable_fish_frenzy():
     fish_frenzy_enabled = true
 
 func shake(shake_amount):
-    $Camera2D.set_offset(Vector2( 
-        randf_range(-1.0, 1.0) * shake_amount,
-        randf_range(-1.0, 1.0) * shake_amount
+    $Camera2D.set_offset(Vector2(
+        randf_range( - 1.0, 1.0) * shake_amount,
+        randf_range( - 1.0, 1.0) * shake_amount
     ))
     
 func shake_reset():
-    $Camera2D.set_offset(Vector2(0.0,0.0))
+    $Camera2D.set_offset(Vector2(0.0, 0.0))
 
 func _on_main_player_update_energy():
     $EnergyProgressBar.value = player_energy
-    $EnergyProgressBar.visible = true   
+    $EnergyProgressBar.visible = true
 
 func _on_main_player_update_fish():
     $FishProgressBar.value = get_parent().fish_collected
@@ -777,11 +777,11 @@ func power_up_tick():
                         'SPEED UP':
                             speed = constants.PLAYER_SPEED + (constants.PLAYER_SPEED_POWERUP_INCREASE * current_powerup_levels[powerup])
                         'FAST SPRAY':
-                            fire_delay = constants.PLAYER_FIRE_DELAY - (constants.PLAYER_FIRE_DELAY_POWERUP_DECREASE * current_powerup_levels[powerup])  
+                            fire_delay = constants.PLAYER_FIRE_DELAY - (constants.PLAYER_FIRE_DELAY_POWERUP_DECREASE * current_powerup_levels[powerup])
                         'BIG SPRAY':
-                            spray_size = 0.5 + (constants.PLAYER_FIRE_SIZE_POWERUP_INCREASE * current_powerup_levels[powerup])  
+                            spray_size = 0.5 + (constants.PLAYER_FIRE_SIZE_POWERUP_INCREASE * current_powerup_levels[powerup])
                         'GRENADE':
-                            grenade_delay = constants.PLAYER_GRENADE_DELAY - (constants.PLAYER_GRENADE_DELAY_POWERUP_DECREASE * current_powerup_levels[powerup])                   
+                            grenade_delay = constants.PLAYER_GRENADE_DELAY - (constants.PLAYER_GRENADE_DELAY_POWERUP_DECREASE * current_powerup_levels[powerup])
                         'MINI SHARK':
                             for single_shark in get_tree().get_nodes_in_group('miniSharkGroup'):
                                 single_shark.queue_free()
@@ -816,7 +816,7 @@ func _on_hud_upgrade_button_pressed(button_number):
     # Mark upgrade as in use by increasing its level.
     # Ensure level does not exceed the maximum allowed.
     
-    if upgrades[selected_upgrade][0] != -1:
+    if upgrades[selected_upgrade][0] != - 1:
         upgrades[selected_upgrade][0] = upgrades[selected_upgrade][0] + 1
         if upgrades[selected_upgrade][0] > upgrades[selected_upgrade][1]:
             upgrades[selected_upgrade][0] = upgrades[selected_upgrade][1]
@@ -825,7 +825,7 @@ func _on_hud_upgrade_button_pressed(button_number):
         'MAGNET':
             item_magnet_enabled = true
         'ARMOUR':
-            pass    # No further action other than marking upgrade as in use needed.
+            pass # No further action other than marking upgrade as in use needed.
         'FISH AFFINITY':
             var affinity_percentage = upgrades['FISH AFFINITY'][0] * 10
             var fish_needed = int(constants.FISH_TO_TRIGGER_FISH_FRENZY - ((affinity_percentage / 100.0) * constants.FISH_TO_TRIGGER_FISH_FRENZY))
@@ -837,9 +837,8 @@ func _on_hud_upgrade_button_pressed(button_number):
             player_energy = constants.PLAYER_START_GAME_ENERGY
             _on_main_player_update_energy()
                             
-            if (original_energy <= constants.PLAYER_LOW_ENERGY_BLINK) && (player_energy > constants.PLAYER_LOW_ENERGY_BLINK):
+            if (original_energy <= constants.PLAYER_LOW_ENERGY_BLINK)&&(player_energy > constants.PLAYER_LOW_ENERGY_BLINK):
                 emit_signal('player_no_longer_low_energy')
-            
     
     get_parent().get_node('HUD').update_upgrade_summary()
     

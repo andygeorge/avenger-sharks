@@ -16,9 +16,9 @@ func _ready():
     
     # Up in the air... and down again...
     var tween = get_tree().create_tween()
-    tween.tween_property(self, "scale", Vector2(10,10), 0.25)
-    tween.tween_property(self, "scale", Vector2(10,10), 0.10)
-    tween.tween_property(self, "scale", Vector2(2,2), 0.25)
+    tween.tween_property(self, "scale", Vector2(10, 10), 0.25)
+    tween.tween_property(self, "scale", Vector2(10, 10), 0.10)
+    tween.tween_property(self, "scale", Vector2(2, 2), 0.25)
 
     $GrenadeFuseTimer.start()
 
@@ -28,9 +28,9 @@ func _physics_process(_delta):
     match state:
         THROWING:
             if $GrenadeFuseTimer.time_left == 0:
-                state=EXPLODING
-                velocity=Vector2(0,0)
-                set_collision_mask_value(3, true)       # Allow enemy damage.
+                state = EXPLODING
+                velocity = Vector2(0, 0)
+                set_collision_mask_value(3, true) # Allow enemy damage.
                 $CollisionShape2D.disabled = true
                 $CollisionShape2DExplosion.disabled = false
                 $AnimatedSprite2D.visible = false

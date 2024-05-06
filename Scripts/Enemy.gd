@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-const EnemyAttackScene = preload("res://Scenes/EnemyAttack.tscn");
-const EnemyTrapScene = preload("res://Scenes/EnemyTrap.tscn");
+const EnemyAttackScene = preload ("res://Scenes/EnemyAttack.tscn");
+const EnemyTrapScene = preload ("res://Scenes/EnemyTrap.tscn");
 
 @export var state = SPAWNING
 
@@ -85,10 +85,10 @@ func spawn_specific(enemy_type_in):
         set_collision_mask_value(collision_mask_enable, true)
     
     # Increase enemy speed as waves progress.
-    var i=1
+    var i = 1
     while i <= get_parent().wave_number - 1:
-        enemy_speed = enemy_speed + int( (constants.ENEMY_SPEED_WAVE_PERCENTAGE_MULTIPLIER / enemy_speed)*100 )
-        i+=1
+        enemy_speed = enemy_speed + int((constants.ENEMY_SPEED_WAVE_PERCENTAGE_MULTIPLIER / enemy_speed) * 100)
+        i += 1
     
     if !instant_spawn:
         $StateTimer.start();
@@ -100,7 +100,7 @@ func spawn_specific(enemy_type_in):
         $SpawnOutwardsTimer.start()
     
     if enemy_is_split:
-        scale = enemy_settings.get('split_size', Vector2(1.0,1.0))
+        scale = enemy_settings.get('split_size', Vector2(1.0, 1.0))
     
     # 'Grouped' enemy (i.e. snake) handling code.
     if grouped_enemy:
@@ -111,13 +111,13 @@ func spawn_specific(enemy_type_in):
             # Parent / Head spawning code.
             get_parent().grouped_enemy_id = get_parent().grouped_enemy_id + 1
             enemy_group_id = get_parent().grouped_enemy_id
-            add_to_group("groupedEnemy-" + str( enemy_group_id ))
-            for grouped_count in range(1,6):
+            add_to_group("groupedEnemy-" + str(enemy_group_id))
+            for grouped_count in range(1, 6):
                 var mob = get_parent().enemy_scene.instantiate()
                 
                 mob.get_node('.').set_position(position)
                 mob.add_to_group('enemyGroup')
-                mob.add_to_group("groupedEnemy-" + str( enemy_group_id ))
+                mob.add_to_group("groupedEnemy-" + str(enemy_group_id))
                 mob.set_enemy_group_id(enemy_group_id)
                 mob.set_child_of_enemy(true)
                 mob.set_child_number(grouped_count)
@@ -125,7 +125,7 @@ func spawn_specific(enemy_type_in):
                 get_parent().add_child(mob)
                 mob.spawn_specific(enemy_type)
                 
-    set_modulate(Color(0,0,0,0));
+    set_modulate(Color(0, 0, 0, 0));
     hit_to_be_processed = false
     $SpawnParticles.emitting = true
 
@@ -159,18 +159,18 @@ func set_enemy_group_id(in_enemy_group_id):
 func reset_state_timer():
     $StateTimer.start(0.1)
     
-func stop_calling_for_help():    
+func stop_calling_for_help():
     $CallForHelpTimer.stop()
     
     if call_for_help_timer_label and is_instance_valid(call_for_help_timer_label):
         call_for_help_timer_label.hide()
 
 func _physics_process(delta):
-    set_modulate(lerp(get_modulate(), Color(1,1,1,1), 0.02));
+    set_modulate(lerp(get_modulate(), Color(1, 1, 1, 1), 0.02));
    
     match state:
         SPAWNING:
-            velocity = Vector2(0,0);
+            velocity = Vector2(0, 0);
             
             if $FlashHitTimer.time_left == 0 and hit_to_be_processed:
                 set_modulate(stored_modulate);
@@ -181,8 +181,8 @@ func _physics_process(delta):
                 state = WANDER;
                 $AnimatedSprite2D.play();
                                
-                set_collision_mask_value(1,true)    # Allow player collisions.
-                set_collision_layer_value(3,true)   # Identify as an Enemy
+                set_collision_mask_value(1, true) # Allow player collisions.
+                set_collision_layer_value(3, true) # Identify as an Enemy
 
                 if attack_timer_min:
                     $AttackTimer.start(randf_range(attack_timer_min, attack_timer_max));
@@ -192,7 +192,7 @@ func _physics_process(delta):
 
         WANDER:
             if $FlashHitTimer.time_left == 0:
-                set_modulate(Color(1,1,1,1));
+                set_modulate(Color(1, 1, 1, 1));
             
             if $StateTimer.time_left == 0 and !knocked_back:
                 var ai_mode_to_use = ai_mode
@@ -211,8 +211,8 @@ func _physics_process(delta):
                     'SPAWN_OUTWARDS':
                         velocity = initial_direction * (enemy_speed * constants.ENEMY_SPEED_DEFERRED_AI_MULTIPLIER)
                         
-                        if $SpawnOutwardsTimer.time_left==0:
-                            ai_mode='CHASE'
+                        if $SpawnOutwardsTimer.time_left == 0:
+                            ai_mode = 'CHASE'
                         
                     # Pursue the player.
                     'CHASE':
@@ -229,7 +229,6 @@ func _physics_process(delta):
                         
                         $StateTimer.start(randf_range(constants.ENEMY_CHASE_REORIENT_MINIMUM_SECONDS,
                                                     constants.ENEMY_CHASE_REORIENT_MAXIMUM_SECONDS))
-                                                    
                                             
                     # Flee the player.
                     'RUN_AWAY':
@@ -266,13 +265,13 @@ func _physics_process(delta):
                             # Pacifist mode.
                             $StateTimer.start(randf_range(constants.ENEMY_DEFAULT_CHANGE_DIRECTION_MINIMUM_SECONDS,
                                                     constants.ENEMY_DEFAULT_CHANGE_DIRECTION_MAXIMUM_SECONDS));
-                            velocity = Vector2(randf_range(-1,1), randf_range(-1,1)).normalized() * enemy_speed;
+                            velocity = Vector2(randf_range( - 1, 1), randf_range( - 1, 1)).normalized() * enemy_speed;
                             
-                    'WANDER':        
+                    'WANDER':
                         # Wander around a bit randomly.
                         $StateTimer.start(randf_range(constants.ENEMY_DEFAULT_CHANGE_DIRECTION_MINIMUM_SECONDS,
                                                     constants.ENEMY_DEFAULT_CHANGE_DIRECTION_MAXIMUM_SECONDS));
-                        velocity = Vector2(randf_range(-1,1), randf_range(-1,1)).normalized() * enemy_speed;
+                        velocity = Vector2(randf_range( - 1, 1), randf_range( - 1, 1)).normalized() * enemy_speed;
                            
                     'GROUP':
                         # Used for a snake sort of enemy.
@@ -280,12 +279,12 @@ func _physics_process(delta):
                         if !child_of_enemy:
                             # I set the direction.
                             # Wander.
-                            $StateTimer.start(randf_range(1,3))
-                            desired_velocity = Vector2(randf_range(-1,1), randf_range(-1,1)).normalized() * enemy_speed
+                            $StateTimer.start(randf_range(1, 3))
+                            desired_velocity = Vector2(randf_range( - 1, 1), randf_range( - 1, 1)).normalized() * enemy_speed
                                                                                 
         DYING:
             if $FlashHitTimer.time_left == 0:
-                set_modulate(Color(1,1,1,1));
+                set_modulate(Color(1, 1, 1, 1));
                 
             if $DeathParticlesTimer.time_left == 0:
                 $DeathParticles.emitting = false
@@ -314,24 +313,24 @@ func _physics_process(delta):
                     var target_direction = (get_parent().get_node('Arena').get_position_from_tilemap(astar_pathing_grid[0]) - global_position).normalized()
                     velocity = target_direction * 2500
 
-    if (state != DYING) && (state != SWIM_ESCAPE):
+    if (state != DYING)&&(state != SWIM_ESCAPE):
         if desired_velocity and !child_of_enemy:
             velocity = velocity.lerp(desired_velocity, 0.01)
     
         if child_of_enemy:
             # Always move towards my parent, keeping a set distance.
-            var target = parent_node.global_position + ((child_number-1)*50) * parent_node.global_position.direction_to(global_position)
+            var target = parent_node.global_position + ((child_number - 1) * 50) * parent_node.global_position.direction_to(global_position)
             global_position = global_position.move_toward(target, 2000 * delta)
         
-    var collision = move_and_collide(velocity * delta);	
+    var collision = move_and_collide(velocity * delta);
     
     if velocity.x > 0:
         $AnimatedSprite2D.set_flip_h(false);
     
     if velocity.x < 0:
-        $AnimatedSprite2D.set_flip_h(true);	
+        $AnimatedSprite2D.set_flip_h(true);
  
-    if $AttackTimer.time_left == 0 && state == WANDER && attack_timer_min && (!get_parent().get_node('Player').power_pellet_enabled):
+    if $AttackTimer.time_left == 0&&state == WANDER&&attack_timer_min&&(!get_parent().get_node('Player').power_pellet_enabled):
         match attack_type:
             'STANDARD':
                 var enemy_attack = EnemyAttackScene.instantiate()
@@ -341,7 +340,7 @@ func _physics_process(delta):
                 var target_direction = (get_parent().get_node("Player").global_position - global_position).normalized()
                 
                 # We don't want enemies to always be a perfect shot.
-                target_direction = target_direction.rotated( deg_to_rad(randf_range(0,constants.ENEMY_ATTACK_ARC_DEGREES)))
+                target_direction = target_direction.rotated(deg_to_rad(randf_range(0, constants.ENEMY_ATTACK_ARC_DEGREES)))
                 
                 enemy_attack.global_position = position
 
@@ -354,15 +353,15 @@ func _physics_process(delta):
                     var enemy_attack = EnemyAttackScene.instantiate()
                     get_parent().add_child(enemy_attack);
                     enemy_attack.add_to_group('enemyAttack')
-                    var target_direction = Vector2(1,1).normalized();
-                    target_direction = target_direction.rotated ( deg_to_rad(360.0/16.0) * i)
+                    var target_direction = Vector2(1, 1).normalized();
+                    target_direction = target_direction.rotated(deg_to_rad(360.0 / 16.0) * i)
                     enemy_attack.global_position = position
                     enemy_attack.velocity = target_direction * enemy_attack.enemy_attack_speed
-                    i+=1
+                    i += 1
             
         $AttackTimer.start(randf_range(attack_timer_min, attack_timer_max))
                   
-    if $TrapTimer.time_left == 0 && state == WANDER && trap_timer_min:
+    if $TrapTimer.time_left == 0&&state == WANDER&&trap_timer_min:
         var enemy_trap = EnemyTrapScene.instantiate();
         get_parent().add_child(enemy_trap)
         enemy_trap.add_to_group('enemyTrap')
@@ -371,7 +370,7 @@ func _physics_process(delta):
         $TrapTimer.start(randf_range(trap_timer_min, trap_timer_max))
         
     if collision and !child_of_enemy:
-        if enemy_type == 'necromancer' && collision.get_collider().name.contains('Fish') && get_parent().game_mode == 'ARCADE':
+        if enemy_type == 'necromancer'&&collision.get_collider().name.contains('Fish')&&get_parent().game_mode == 'ARCADE':
             var collided_with = collision.get_collider()
             collided_with.get_node('.')._death(1)
             $AudioStreamPlayerFishSplat.play()
@@ -385,15 +384,15 @@ func _physics_process(delta):
                 if ai_mode == 'CHASE':
                     # Slide around the wall to get to player.
                     velocity = velocity.slide(collision.get_normal())
-                else: 
+                else:
                     # Boing!
                     velocity = velocity.bounce(collision.get_normal())
                     if desired_velocity:
                         desired_velocity = desired_velocity.bounce(collision.get_normal())
-                    ai_mode=ai_mode_setting
+                    ai_mode = ai_mode_setting
     
 func _death(death_source):
-    if state == SPAWNING && !constants.ENEMY_ALLOW_DAMAGE_WHEN_SPAWNING:
+    if state == SPAWNING&&!constants.ENEMY_ALLOW_DAMAGE_WHEN_SPAWNING:
         return
     
     if state != DYING:
@@ -401,9 +400,9 @@ func _death(death_source):
         
         hit_to_be_processed = true
         
-        if enemy_health <=0 :
+        if enemy_health <= 0:
             $CollisionShape2D.set_deferred("disabled", true)
-            velocity = Vector2(0,0);
+            velocity = Vector2(0, 0);
             $AnimatedSprite2D.animation = enemy_type + str('-death');
             
             if death_sprite_offset:
@@ -413,7 +412,7 @@ func _death(death_source):
                 if $AnimatedSprite2D.is_flipped_h():
                     temp_offset_x = -temp_offset_x
                     
-                $AnimatedSprite2D.offset = Vector2(temp_offset_x, temp_offset_y)                    
+                $AnimatedSprite2D.offset = Vector2(temp_offset_x, temp_offset_y)
 
             $AnimatedSprite2D.play()
             $AudioStreamPlayer.play();
@@ -429,20 +428,20 @@ func _death(death_source):
             if grouped_enemy:
                 grouped_enemy_has_died = grouped_enemy_death()
             
-            var actual_scored = get_parent()._on_enemy_update_score(enemy_score,global_position,death_source,enemy_type,enemy_is_split,grouped_enemy_has_died)
+            var actual_scored = get_parent()._on_enemy_update_score(enemy_score, global_position, death_source, enemy_type, enemy_is_split, grouped_enemy_has_died)
             
             score_label_animation(str(actual_scored))
             
-            if get_parent().game_mode == 'ARCADE' && (get_parent().dropped_items_on_screen < constants.ARCADE_MAXIMUM_DROPPED_ITEMS_ON_SCREEN):
-                if !(grouped_enemy and !grouped_enemy_has_died):        
+            if get_parent().game_mode == 'ARCADE'&&(get_parent().dropped_items_on_screen < constants.ARCADE_MAXIMUM_DROPPED_ITEMS_ON_SCREEN):
+                if !(grouped_enemy and !grouped_enemy_has_died):
                     leave_behind_item()
         else:
             stored_modulate = get_modulate()
-            set_modulate(Color(10,10,10,10));
+            set_modulate(Color(10, 10, 10, 10));
             $FlashHitTimer.start()
             
             if can_be_knocked_back and death_source == 'PLAYER-SHOT':
-                velocity = velocity.clamp(-constants.ENEMY_KNOCKBACK_VELOCITY_CLAMP, constants.ENEMY_KNOCKBACK_VELOCITY_CLAMP)
+                velocity = velocity.clamp( - constants.ENEMY_KNOCKBACK_VELOCITY_CLAMP, constants.ENEMY_KNOCKBACK_VELOCITY_CLAMP)
                 knocked_back = true
                 $KnockbackTimer.start(constants.ENEMY_KNOCKBACK_TIMER)
      
@@ -456,34 +455,34 @@ func grouped_enemy_death():
             # I am a child.
             # We just need to recompute child numbers for everything except the parent.
             var i = 0
-            for single_enemy in get_tree().get_nodes_in_group("groupedEnemy-" + str( enemy_group_id )):
+            for single_enemy in get_tree().get_nodes_in_group("groupedEnemy-" + str(enemy_group_id)):
                 if single_enemy.name == name:
                     continue
                     
                 if single_enemy.state == DYING:
                     continue
                     
-                i+=1
+                i += 1
                 single_enemy.set_child_number(i)
         else:
             # I am the parent.
             var i = 0
              
-            for single_enemy in get_tree().get_nodes_in_group("groupedEnemy-" + str( enemy_group_id)):
+            for single_enemy in get_tree().get_nodes_in_group("groupedEnemy-" + str(enemy_group_id)):
                 if single_enemy.name == name:
                     continue
             
                 if single_enemy.state == DYING:
-                    continue  
+                    continue
                         
-                i+=1
+                i += 1
                 if i == 1:
                     # Congratulations.  You are the new parent.
                     single_enemy.set_child_of_enemy(false)
                     remember_the_parent = single_enemy
                 else:
                     # You are a child.
-                    single_enemy.set_child_number(i-1)
+                    single_enemy.set_child_number(i - 1)
                     single_enemy.set_parent_node(remember_the_parent)
                             
             if !i:
@@ -493,10 +492,10 @@ func grouped_enemy_death():
         return false
                         
 func leave_behind_item():
-    var percentage_calc  = (get_parent().get_node('Player').upgrades['LOOT LOVER'][0] * 10.0) / 100.0
+    var percentage_calc = (get_parent().get_node('Player').upgrades['LOOT LOVER'][0] * 10.0) / 100.0
     var leave_percentage = constants.ENEMY_LEAVE_BEHIND_ITEM_PERCENTAGE + (percentage_calc * constants.ENEMY_LEAVE_BEHIND_ITEM_PERCENTAGE)
     
-    if randi_range(1,100) <= leave_percentage:
+    if randi_range(1, 100) <= leave_percentage:
         var item = get_parent().item_scene.instantiate()
         get_parent().add_child(item)
         item.spawn_random(true)
@@ -509,17 +508,17 @@ func score_label_animation(label_text):
     var new_label = $ScoreLabel.duplicate()
     add_child(new_label)
     
-    new_label.set_modulate(Color(1,1,1,1));
+    new_label.set_modulate(Color(1, 1, 1, 1));
     new_label.text = label_text
     new_label.visible = true
     
     # Text should move upwards slightly.
     var target_position = new_label.position
-    target_position.y += -50
+    target_position.y += - 50
     
     var tween = get_tree().create_tween()
     tween.set_parallel()
-    tween.tween_property(new_label, "modulate", Color(0,0,0,0), 2)
+    tween.tween_property(new_label, "modulate", Color(0, 0, 0, 0), 2)
     tween.tween_property(new_label, "position", target_position, 2)
     tween.tween_callback(new_label.queue_free).set_delay(2)
     
@@ -530,17 +529,17 @@ func help_me_label_animation(label_text):
     # Keep track so we can quickly remove it upon end of shark attack.
     call_for_help_timer_label = new_label
     
-    new_label.set_modulate(Color(1,1,1,1));
+    new_label.set_modulate(Color(1, 1, 1, 1));
     new_label.text = label_text
     new_label.visible = true
     
     # Text should move upwards slightly.
     var target_position = new_label.position
-    target_position.y += -50
+    target_position.y += - 50
     
     var tween = get_tree().create_tween()
     tween.set_parallel()
-    tween.tween_property(new_label, "modulate", Color(0,0,0,0), 2)
+    tween.tween_property(new_label, "modulate", Color(0, 0, 0, 0), 2)
     tween.tween_property(new_label, "position", target_position, 2)
     tween.tween_callback(new_label.queue_free).set_delay(2)
     
@@ -551,16 +550,16 @@ func is_enemy_alive():
         return false
 
 func consider_calling_for_help():
-    $CallForHelpTimer.set_wait_time( randf_range(0.1, 0.4))
+    $CallForHelpTimer.set_wait_time(randf_range(0.1, 0.4))
     $CallForHelpTimer.start()
     
 func _on_call_for_help_timer_timeout():
     
     $CallForHelpTimer.set_wait_time(randf_range(constants.ENEMY_CALL_FOR_HELP_MINIMUM_TIME, constants.ENEMY_CALL_FOR_HELP_MAXIMUM_TIME))
     
-    if is_enemy_alive():    
-        if randi_range(0,100) <= constants.ENEMY_CALL_FOR_HELP_PERCENTAGE:
-            help_me_label_animation( constants.ENEMY_CALL_FOR_HELP_PHRASES[randi() % constants.ENEMY_CALL_FOR_HELP_PHRASES.size()] )
+    if is_enemy_alive():
+        if randi_range(0, 100) <= constants.ENEMY_CALL_FOR_HELP_PERCENTAGE:
+            help_me_label_animation(constants.ENEMY_CALL_FOR_HELP_PHRASES[randi() % constants.ENEMY_CALL_FOR_HELP_PHRASES.size()])
             
 func _on_knockback_timer_timeout():
     knocked_back = false

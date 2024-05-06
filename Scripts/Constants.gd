@@ -18,7 +18,7 @@ const DEV_WIPE_ACHIEVEMENTS = false
 
 # Hardware settings
 const WINDOW_TITLE = "Avenger Sharks " + GAME_VERSION
-const WINDOW_SIZE = Vector2(1920,1080)
+const WINDOW_SIZE = Vector2(1920, 1080)
 const CAMERA_ZOOM_EFFECTS = false
 
 # Game settings
@@ -35,7 +35,7 @@ const ARENA_SPAWN_MIN_Y = 320
 const ARENA_SPAWN_MAX_Y = 1250 * 2
 
 const ARENA_OBSTACLE_MINIMUM = 5 # 3
-const ARENA_OBSTACLE_MAXIMUM = 10  # 7 
+const ARENA_OBSTACLE_MAXIMUM = 10 # 7
 const ARENA_OBSTACLE_SIZE_MINIMUM = 3
 const ARENA_OBSTACLE_SIZE_MAXIMUM = 5
 
@@ -84,17 +84,17 @@ const ENEMY_SPAWN_WAVE_SPECIAL_CONFIGURATION = {
 }
 
 const ENEMY_SPAWN_PLACEMENT_CONFIGURATION_WAVE_START = {
-    50:     'RANDOM',
-    100:    'CIRCLE_SURROUND_PLAYER'
+    50: 'RANDOM',
+    100: 'CIRCLE_SURROUND_PLAYER'
 }
 
 const ENEMY_SPAWN_PLACEMENT_CONFIGURATION = {
-    50:     'RANDOM',
-    80:     'CIRCLE_SURROUND_PLAYER',
-    85:     'HARD_TOP', 
-    90:     'HARD_BOTTOM',
-    95:     'HARD_LEFT',
-    100:    'HARD_RIGHT'
+    50: 'RANDOM',
+    80: 'CIRCLE_SURROUND_PLAYER',
+    85: 'HARD_TOP',
+    90: 'HARD_BOTTOM',
+    95: 'HARD_LEFT',
+    100: 'HARD_RIGHT'
 }
 
 const ENEMY_MULTIPLIER_AT_WAVE_START = 10
@@ -111,79 +111,79 @@ const ENEMY_SETTINGS = {
     'knight':   {
         'minimum_wave': 1,
         'spawn_chance': 1.0,
-        'speed':    450,
-        'health':   3,
-        'AI':       'CHASE',
-        'score':    10,
-        'can_be_knocked_back':  true,
-        'death_sprite_offset':  Vector2(5,0)
+        'speed': 450,
+        'health': 3,
+        'AI': 'CHASE',
+        'score': 10,
+        'can_be_knocked_back': true,
+        'death_sprite_offset': Vector2(5, 0)
     },
     'wizard':   {
         'minimum_wave': 1,
         'spawn_chance': 1.0,
-        'speed':    450,
-        'health':   1,
-        'AI':       'WANDER',
-        'score':    10,
+        'speed': 450,
+        'health': 1,
+        'AI': 'WANDER',
+        'score': 10,
         'attack_timer_min': 3,
         'attack_timer_max': 5,
-        'attack_type':  'STANDARD',
-        'death_sprite_offset':  Vector2(10,0)
+        'attack_type': 'STANDARD',
+        'death_sprite_offset': Vector2(10, 0)
     },
     'rogue':   {
-        'minimum_wave':  2,
+        'minimum_wave': 2,
         'spawn_chance': 0.5,
-        'speed':    450,
-        'health':   1,
-        'AI':       'WANDER',
-        'score':    10,
+        'speed': 450,
+        'health': 1,
+        'AI': 'WANDER',
+        'score': 10,
         'trap_timer_min': 4,
         'trap_timer_max': 10,
     },
     'necromancer':  {
         'minimum_wave': 8,
         'spawn_chance': 0.1,
-        'speed':    100,
-        'health':   10,
-        'AI':       'FISH',
-        'score':    30,
+        'speed': 100,
+        'health': 10,
+        'AI': 'FISH',
+        'score': 30,
         'attack_timer_min': 5,
         'attack_timer_max': 10,
-        'attack_type':  'SPIRAL',
+        'attack_type': 'SPIRAL',
         'can_be_knocked_back': true,
-        'sprite_offset':    Vector2(0,-25),
-        'collision_scale':  Vector2(1.5,1.5),
-        'collision_mask_enable':    7
+        'sprite_offset': Vector2(0, -25),
+        'collision_scale': Vector2(1.5, 1.5),
+        'collision_mask_enable': 7
     },
     'bee':   {
         'minimum_wave': 4,
         'spawn_chance': 0.35,
-        'speed':    600,
-        'health':   1,
-        'AI':       'CHASE',
-        'score':    10,
+        'speed': 600,
+        'health': 1,
+        'AI': 'CHASE',
+        'score': 10,
     },
     'skeleton': {
         'minimum_wave': 3,
         'spawn_chance': 0.25,
-        'speed':    450,
-        'health':   1,
-        'AI':       'WANDER',
-        'score':    10,
-        'spawns_others':    true,
-        'split_size':  Vector2(0.75,0.75),
-        'death_sprite_offset':  Vector2(0,-5)
+        'speed': 450,
+        'health': 1,
+        'AI': 'WANDER',
+        'score': 10,
+        'spawns_others': true,
+        'split_size': Vector2(0.75, 0.75),
+        'death_sprite_offset': Vector2(0, -5)
     },
     'snake': {
         'minimum_wave': 5,
         'spawn_chance': 0.15,
-        'speed':    450,
-        'health':   2,
-        'AI':       'GROUP',
-        'score':    10,
-        'grouped_enemy':  true,
-        'chase_at_low_population':  false,
-        'sprite_scale': Vector2(6,6)
+        'speed': 450,
+        'health': 2,
+        'AI': 'GROUP',
+        'score': 10,
+        'grouped_enemy': true,
+        'chase_at_low_population': false,
+        'sprite_scale': Vector2(6, 6)
     }
 }
 
@@ -195,8 +195,8 @@ const ENEMY_ALLOW_DAMAGE_WHEN_SPAWNING = false
 
 const ENEMY_ATTACK_ARC_DEGREES = 20;
 
-const ENEMY_CHASE_REORIENT_MINIMUM_SECONDS = 0.1    # 0.2
-const ENEMY_CHASE_REORIENT_MAXIMUM_SECONDS = 0.1    # 0.2
+const ENEMY_CHASE_REORIENT_MINIMUM_SECONDS = 0.1 # 0.2
+const ENEMY_CHASE_REORIENT_MAXIMUM_SECONDS = 0.1 # 0.2
 
 const ENEMY_DEFAULT_CHANGE_DIRECTION_MINIMUM_SECONDS = 1;
 const ENEMY_DEFAULT_CHANGE_DIRECTION_MAXIMUM_SECONDS = 3;
@@ -208,23 +208,23 @@ const ENEMY_TRAP_HEALTH = 4
 const ENEMY_CALL_FOR_HELP_MINIMUM_TIME = 2.0
 const ENEMY_CALL_FOR_HELP_MAXIMUM_TIME = 3.0
 const ENEMY_CALL_FOR_HELP_PERCENTAGE = 20
-const ENEMY_CALL_FOR_HELP_PHRASES = [ "HELP!", "DON'T EAT ME!", "NOOOOO!"]
+const ENEMY_CALL_FOR_HELP_PHRASES = ["HELP!", "DON'T EAT ME!", "NOOOOO!"]
 
 const ENEMY_KNOCKBACK_TIMER = 0.3
-const ENEMY_KNOCKBACK_VELOCITY_CLAMP = Vector2(200,200)
+const ENEMY_KNOCKBACK_VELOCITY_CLAMP = Vector2(200, 200)
 
 # Boss waves
 const BOSS_WAVE_MULTIPLIER = 1000000
 
 # Fish
 const FISH_TO_SPAWN_ARCADE = 20;
-const FISH_TO_SPAWN_PACIFIST_BASE = 5 
+const FISH_TO_SPAWN_PACIFIST_BASE = 5
 const FISH_TO_SPAWN_PACIFIST_WAVE_MULTIPLIER = 2
 const GET_FISH_SCORE = 50;
 const FISH_TO_TRIGGER_FISH_FRENZY = 15
 
 # Items
-const ARCADE_SPAWNING_ITEMS = ['dinosaur','dinosaur','dinosaur','power-pellet']
+const ARCADE_SPAWNING_ITEMS = ['dinosaur', 'dinosaur', 'dinosaur', 'power-pellet']
 #const ARCADE_SPAWNING_ITEMS = ['power-pellet']
 const PACIFIST_SPAWNING_ITEMS = ['health']
 

@@ -11,7 +11,7 @@ func design_wave(wave_number):
     
     WaveDesign.clear()
     spawn_ratios.clear()
-    running_chance=0.0
+    running_chance = 0.0
     
     if wave_number % constants.BOSS_WAVE_MULTIPLIER == 0:
         Logging.log_entry("Boss wave qualifier.")
@@ -22,7 +22,7 @@ func design_wave(wave_number):
     WaveDesign['wave_time'] = constants.WAVE_SURVIVAL_TIME_BASE
 
     if wave_number > 1:
-        WaveDesign['wave_time'] = WaveDesign['wave_time'] + ( constants.WAVE_SURVIVAL_TIME_INCREASE * (wave_number-1) )
+        WaveDesign['wave_time'] = WaveDesign['wave_time'] + (constants.WAVE_SURVIVAL_TIME_INCREASE * (wave_number - 1))
         
     if WaveDesign['wave_time'] > constants.WAVE_SURVIVAL_TIME_MAXIMUM:
         WaveDesign['wave_time'] = constants.WAVE_SURVIVAL_TIME_MAXIMUM
@@ -32,7 +32,7 @@ func design_wave(wave_number):
     
     # Specialised wave.
     if wave_number >= constants.ENEMY_SPAWN_WAVE_SPECIAL_MIN_WAVE:
-        var spawn_choice = randi_range(1,100)
+        var spawn_choice = randi_range(1, 100)
     
         for spawn_key in constants.ENEMY_SPAWN_WAVE_SPECIAL_CONFIGURATION:
             if spawn_choice <= spawn_key:
@@ -49,12 +49,11 @@ func design_wave(wave_number):
     # Artillery
     if wave_number >= constants.ARTILLERY_MINIMUM_WAVE:
         Logging.log_entry("Artillery is possible for this wave.")
-        if randi_range(1,100) <= constants.ARTILLERY_FEATURE_PERCENTAGE:
+        if randi_range(1, 100) <= constants.ARTILLERY_FEATURE_PERCENTAGE:
             Logging.log_entry("Artillery WILL happen.")
             WaveDesign['artillery'] = true
         else:
             Logging.log_entry("Artillery WILL NOT happen.")
-            
     
     # How many enemies?
     WaveDesign['total_enemies'] = (wave_number * constants.ENEMY_MULTIPLIER_AT_WAVE_START) + (wave_number * constants.ENEMY_MULTIPLIER_DURING_WAVE)
@@ -64,7 +63,7 @@ func design_wave(wave_number):
         WaveDesign['total_enemies'] = constants.DEV_SPAWN_ENEMY_COUNT
     
     Logging.log_entry("Total enemies this wave: " + str(WaveDesign['total_enemies']))
-    left_to_spawn = WaveDesign['total_enemies'] + 5000   # Padding.
+    left_to_spawn = WaveDesign['total_enemies'] + 5000 # Padding.
 
     # What enemies are eligible to spawn in this wave?
     var wave_enemies = {}
@@ -88,7 +87,7 @@ func design_wave(wave_number):
         running_chance += WaveDesign['eligible_enemies'][enemy].get('spawn_chance')
         spawn_ratios[running_chance] = enemy
 
-    Logging.log_entry("Spawn ratios: " + str(spawn_ratios))        
+    Logging.log_entry("Spawn ratios: " + str(spawn_ratios))
 
     var number_to_spawn_at_start = wave_number * constants.ENEMY_MULTIPLIER_AT_WAVE_START
     
@@ -105,25 +104,25 @@ func design_wave(wave_number):
     var spawn_number = 0
     
     while (left_to_spawn):
-        spawn_number+=1
+        spawn_number += 1
         var spawn_key = "spawn_" + str(spawn_number)
         Logging.log_entry("Left to spawn: " + str(left_to_spawn))
     
         var enemies_to_spawn = constants.ENEMY_REINFORCEMENTS_SPAWN_BATCH_SIZE + (wave_number * constants.ENEMY_REINFORCEMENTS_SPAWN_BATCH_MULTIPLIER)
         if enemies_to_spawn > left_to_spawn:
-            enemies_to_spawn=left_to_spawn
+            enemies_to_spawn = left_to_spawn
             
         Logging.log_entry("This spawn I want to spawn: " + str(enemies_to_spawn))
             
         WaveDesign[spawn_key] = {}
         
-        if ( randi_range(1,100) <= constants.ENEMY_REINFORCEMENTS_SPAWN_MULTI_PLACEMENT_PERCENTAGE):
+        if (randi_range(1, 100) <= constants.ENEMY_REINFORCEMENTS_SPAWN_MULTI_PLACEMENT_PERCENTAGE):
             WaveDesign[spawn_key]['spawn_array'] = get_random_enemies(enemies_to_spawn)
             WaveDesign[spawn_key]['spawn_pattern'] = get_spawn_pattern(constants.ENEMY_SPAWN_PLACEMENT_CONFIGURATION, '')
             WaveDesign[spawn_key]['spawn_pattern_b'] = get_spawn_pattern(constants.ENEMY_SPAWN_PLACEMENT_CONFIGURATION, WaveDesign[spawn_key]['spawn_pattern'])
         else:
             WaveDesign[spawn_key]['spawn_array'] = get_random_enemies(enemies_to_spawn)
-            WaveDesign[spawn_key]['spawn_pattern'] = get_spawn_pattern(constants.ENEMY_SPAWN_PLACEMENT_CONFIGURATION,'')
+            WaveDesign[spawn_key]['spawn_pattern'] = get_spawn_pattern(constants.ENEMY_SPAWN_PLACEMENT_CONFIGURATION, '')
     
         left_to_spawn = left_to_spawn - enemies_to_spawn
         
@@ -141,12 +140,12 @@ func get_random_enemies(number_enemies):
     var spawn_array = []
     
     if TheDirector.WaveDesign.get('wave_special_type') == 'ALL_THE_SAME':
-        for i in range(0,number_enemies):
+        for i in range(0, number_enemies):
             spawn_array.append(TheDirector.WaveDesign.get('wave_special_data'))
         
         return spawn_array
 
-    for i in range(0,number_enemies):
+    for i in range(0, number_enemies):
         # Pick enemies.
         var chosen_enemy
         var spawn_choice = randf_range(0.0, running_chance)
@@ -169,7 +168,7 @@ func get_spawn_pattern(enemy_spawn_placement_configuration, previous_spawn_patte
     # If we have been passed the previous_spawn_pattern, do not allow the same pattern to be used
     # again.
     while (!acceptable_choice):
-        var spawn_choice = randi_range(1,100)
+        var spawn_choice = randi_range(1, 100)
             
         for spawn_key in enemy_spawn_placement_configuration:
             if spawn_choice <= spawn_key:
@@ -177,7 +176,7 @@ func get_spawn_pattern(enemy_spawn_placement_configuration, previous_spawn_patte
                 break
                 
         if spawn_pattern != previous_spawn_pattern:
-            acceptable_choice=true
+            acceptable_choice = true
 
     return spawn_pattern
 

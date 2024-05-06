@@ -10,7 +10,7 @@ func _ready():
     $MiniSharkAnimatedSprite2D.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):        
+func _process(delta):
     if get_parent().velocity.x > 0:
         $MiniSharkAnimatedSprite2D.set_flip_h(true);
             
@@ -21,9 +21,8 @@ func _process(delta):
 
     var offset = Vector2(sin(angle), cos(angle)) * radius;
     var pos = centre + offset
-    position=pos 
+    position = pos
 
 func set_circle_position(shark_number, total_sharks):
-    var angle_degrees  = (360 / total_sharks) * shark_number
+    var angle_degrees = (360 / total_sharks) * shark_number
     angle = deg_to_rad(angle_degrees)
-    

@@ -3,9 +3,8 @@ extends CharacterBody2D
 func _ready():
     $AnimatedSprite2D.play();
     if get_parent().get_node('Player').spray_size:
-        set_global_scale(Vector2(   get_parent().get_node('Player').spray_size,
+        set_global_scale(Vector2(get_parent().get_node('Player').spray_size,
                                     get_parent().get_node('Player').spray_size))
-        
         
 func _physics_process(_delta):
     move_and_slide()

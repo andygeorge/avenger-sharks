@@ -1,6 +1,6 @@
 extends Control
 
-var PowerUpBarSequence = [  'SPEED UP',
+var PowerUpBarSequence = ['SPEED UP',
                             'FAST SPRAY',
                             'BIG SPRAY',
                             'GRENADE',
@@ -54,13 +54,13 @@ func reset_powerup_bar_durations():
     var duration = int(constants.POWERUP_ACTIVE_DURATION + ((duration_percentage / 100.0) * constants.POWERUP_ACTIVE_DURATION))
                     
     for single_powerup in $CanvasLayer/PowerUpContainer.get_children():
-        single_powerup.get_node('Label/ProgressBar').max_value = duration  
+        single_powerup.get_node('Label/ProgressBar').max_value = duration
 
 func set_powerup_level(powerup, level):
     var text = " " + str(level)
     
     if level == 0:
-        text=""
+        text = ""
     
     if level == get_parent().get_node('Player').max_powerup_levels[powerup]:
         text = " MAX"
@@ -98,8 +98,8 @@ func update_upgrade_summary():
 func flash_screen_red():
     var tween = get_tree().create_tween()
     tween.tween_property($CanvasLayer/DamageRect, 'visible', true, 0)
-    tween.tween_property($CanvasLayer/DamageRect, "modulate", Color(1,1,1,1), 0.10)
-    tween.tween_property($CanvasLayer/DamageRect, "modulate", Color(0,0,0,0), 0.10)
+    tween.tween_property($CanvasLayer/DamageRect, "modulate", Color(1, 1, 1, 1), 0.10)
+    tween.tween_property($CanvasLayer/DamageRect, "modulate", Color(0, 0, 0, 0), 0.10)
     tween.tween_property($CanvasLayer/DamageRect, 'visible', false, 0)
     
 func boss_health_reveal():

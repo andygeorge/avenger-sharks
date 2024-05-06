@@ -11,18 +11,18 @@ func _physics_process(_delta):
         
         if collision.get_collider().name == 'Arena':
             self.queue_free()
-            break;
+            break ;
             
         if collision.get_collider().name == 'ExitDoor':
             self.queue_free()
-            break    
+            break
             
         if collision.get_collider().name == 'ExitLocation':
             self.queue_free()
-            break      
+            break
         
         if collision.get_collider().name == 'PlayerStartLocation':
-            break 
+            break
 
         if collision.get_collider().name.contains('Artillery'):
             break

@@ -15,11 +15,11 @@ func _ready():
 
 func prepare_content():
     var content = ""
-    var i=0
+    var i = 0
     
     while (i < 35):
         content += '\n'
-        i+=1
+        i += 1
         
     var file = FileAccess.open("res://CREDITS.txt", FileAccess.READ)
     content += file.get_as_text()
@@ -29,7 +29,7 @@ func prepare_content():
     for single_line in content_array:
         if SteamClient.STEAM_RUNNING:
             if single_line.contains('itch'):
-                continue       
+                continue
         
         fresh_content += single_line + "\n"
     

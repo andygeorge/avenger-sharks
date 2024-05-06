@@ -9,9 +9,9 @@ enum {
 var state
 
 func _ready():
-    $Sprite2D.set_modulate(Color(0,0,0,0))
+    $Sprite2D.set_modulate(Color(0, 0, 0, 0))
     var tween = get_tree().create_tween()
-    tween.tween_property($Sprite2D, "modulate", Color(1,0,0,1), constants.ARTILLERY_WARNING_TIME)
+    tween.tween_property($Sprite2D, "modulate", Color(1, 0, 0, 1), constants.ARTILLERY_WARNING_TIME)
     
     $ChargingTimer.connect('timeout', _on_charging_timer_timeout)
     $FlashingTimer.connect('timeout', _on_flashing_timer_timeout)
@@ -35,7 +35,7 @@ func _on_charging_timer_timeout():
     match state:
         CHASING:
             state = EXPLODING
-            velocity = Vector2(0,0)
+            velocity = Vector2(0, 0)
             $Sprite2D.visible = false
             $FlashingTimer.stop()
             $AnimatedSprite2D.visible = true

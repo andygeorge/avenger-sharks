@@ -10,6 +10,5 @@ func _ready():
 func _process(_delta):
     pass
 
-
 func _on_return_button_pressed():
     emit_signal('how_to_play_return_button_pressed')

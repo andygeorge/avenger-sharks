@@ -13,10 +13,9 @@ func _ready():
 func _physics_process(_delta):
     match state:
         IDLE:
-            velocity = Vector2i(0,0);
+            velocity = Vector2i(0, 0);
         FOLLOWING_PLAYER:
-            global_position = get_parent().get_node("Player").global_position + Vector2(0,50)
-
+            global_position = get_parent().get_node("Player").global_position + Vector2(0, 50)
 
 func _on_player_player_got_key():
     $CollisionShape2D.disabled = true
@@ -25,4 +24,3 @@ func _on_player_player_got_key():
 func _on_player_player_found_exit_stop_key_movement():
    state = IDLE;
    visible = false;
-    

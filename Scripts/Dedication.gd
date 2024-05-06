@@ -12,9 +12,9 @@ func _ready():
     
     $StateTimer.start(5)
     
-    $CanvasLayer/DedicationContainer.set_modulate(Color(0,0,0,0))
+    $CanvasLayer/DedicationContainer.set_modulate(Color(0, 0, 0, 0))
     var tween = get_tree().create_tween()
-    tween.tween_property($CanvasLayer/DedicationContainer, "modulate", Color(1,1,1,1), 1.0)
+    tween.tween_property($CanvasLayer/DedicationContainer, "modulate", Color(1, 1, 1, 1), 1.0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

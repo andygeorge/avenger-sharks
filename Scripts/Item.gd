@@ -14,7 +14,7 @@ var source = ''
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    state=SPAWNING
+    state = SPAWNING
 
 func spawn_random(despawn_mode):
     item_type = ITEMS[randi() % ITEMS.size()]
@@ -28,19 +28,19 @@ func spawn_specific(item_selection, despawn_mode):
     $AnimatedSprite2D.play()
     
     if item_selection == 'power-pellet':
-        $AnimatedSprite2D.scale = Vector2(4,4)
+        $AnimatedSprite2D.scale = Vector2(4, 4)
     
     if despawn_mode:
         $DespawnTimer.start(constants.ITEM_DESPAWN_TIME)
     
-    state=READY
+    state = READY
 
 func set_source(in_source):
-    source=in_source
+    source = in_source
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-    if (state==READY) && ($DespawnTimer.time_left == 0):
+    if (state == READY)&&($DespawnTimer.time_left == 0):
         if source == 'DROPPED':
             get_parent().dropped_items_on_screen = get_parent().dropped_items_on_screen - 1
         despawn()
@@ -50,12 +50,12 @@ func _physics_process(_delta):
         READY:
             move_and_slide()
             
-            var distance = position.distance_to( get_parent().get_node('Player').position )
+            var distance = position.distance_to(get_parent().get_node('Player').position)
             
             if get_parent().get_node('Player').item_magnet_enabled:
                 if distance < 250:
                     var target_direction = (get_parent().get_node("Player").global_position - global_position).normalized();
-                    velocity = target_direction * ( get_parent().get_node("Player").speed + 3000 )
+                    velocity = target_direction * (get_parent().get_node("Player").speed + 3000)
 
 func despawn():
     queue_free()

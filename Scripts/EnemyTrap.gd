@@ -19,7 +19,7 @@ func _physics_process(_delta):
     move_and_slide()
     
     if $FlashHitTimer.time_left == 0:
-        set_modulate(Color(1,1,1,1));
+        set_modulate(Color(1, 1, 1, 1));
     
     match state:
         ACTIVE:
@@ -28,27 +28,26 @@ func _physics_process(_delta):
                 
                 if collision.get_collider().name == 'Arena':
                     self.queue_free()
-                    break;
+                    break ;
                 
                 collision.get_collider().get_node('.')._player_hit();
                 
                 $CollisionShape2D.disabled = true;
                 self.queue_free();
-                break;
+                break ;
                 
         DYING:
             if $StateTimer.time_left == 0:
                 self.queue_free();
-                
             
 func _death(_death_source):
     if state != DYING:
         trap_health = trap_health - 1;
         
-        set_modulate(Color(10,10,10,10));
+        set_modulate(Color(10, 10, 10, 10));
         $FlashHitTimer.start()
         
-        if trap_health <=0 :
+        if trap_health <= 0:
             $CollisionShape2D.set_deferred("disabled", true)
             $AudioStreamPlayer.play();
             $AnimatedSprite2D.stop();
@@ -59,5 +58,5 @@ func _death(_death_source):
             
             $StateTimer.start(0.75);
         else:
-            set_modulate(Color(10,10,10,10));
+            set_modulate(Color(10, 10, 10, 10));
             $FlashHitTimer.start()
